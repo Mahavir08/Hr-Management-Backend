@@ -1,14 +1,20 @@
 import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import morgan from "morgan";
 import cpfRoutes from "./routes/cpf.routes";
+import { connectToMongoDB } from "./utils/mongoConnection";
 
 const app = express();
 const port = process.env.PORT || 8000;
 
+// Connect to MongoDB
+connectToMongoDB();
+
 // Security middleware
 app.use(helmet());
 app.use(express.json());
+app.use(morgan("dev"));
 
 // Rate limiting
 const limiter = rateLimit({
